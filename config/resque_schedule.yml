@@ -1,0 +1,6 @@
+default:
+  every: 30s
+  class: Sleeper
+  args:
+  queue: high
+  description: Runs the perform method in default
