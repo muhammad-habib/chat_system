@@ -5,7 +5,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=exampl
+      - MYSQL_ROOT_PASSWORD=habib
     volumes:
       - ./tmp/db:/var/lib/mysql
   web:
@@ -20,8 +20,20 @@ services:
     links:
       - db
       - redis
+      - elasticsearch
     environment:
+      - ELASTICSEARCH_URL=elasticsearch
       - REDIS_URL=redis://redis:6379
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.0
+    hostname: elasticsearch
+    ports:
+      - "9200:9200"
+#    environment:
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
 
   redis:
     image: redis

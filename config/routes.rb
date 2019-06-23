@@ -1,19 +1,20 @@
 require 'resque/server'
 require 'resque/scheduler/server'
 Rails.application.routes.draw do
-
+  resources :messsages
+  resources :chats
   namespace :api do
     namespace :v1 do
       resources :applications, :except => ['update', 'show']
       put '/applications/:app_token' => 'applications#update'
       get '/applications/:app_token' => 'applications#show'
+      resources :chats, :except => ['update', 'show', 'create']
+      post '/applications/:app_token/chats' => 'chats#create'
+      get '/applications/:app_token/chats' => 'chats#index'
+      resources :messages, :except => ['update', 'show', 'create']
+      post '/applications/:app_token/chats/:chat_number/messages' => 'messages#create'
+      get '/applications/:app_token/chats/:chat_number/messages' => 'messages#index'
     end
   end
-  # resources :posts, :except => ['show', 'update', 'destroy']
-  # get    'posts/:id/:slug' => 'posts#show', :as => 'post'
-  # put    'posts/:id/:slug' => 'posts#update'
-  # delete 'posts/:id/:slug' => 'posts#destroy'
-
   mount Resque::Server.new, at: "/resque"
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
