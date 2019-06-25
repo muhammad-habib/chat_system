@@ -1,12 +1,9 @@
 class Api::V1::MessagesController < ApplicationController
   before_action :checkChat, only: [:create, :index]
-  include(MessageManager)
 
   # GET /messsages
   def index
-    @messsages = Message.all
-
-    render json: @messsages
+    render json: MessageManager::MessageLister.call(params[:chat])
   end
 
   # GET /messsages/1
@@ -16,22 +13,8 @@ class Api::V1::MessagesController < ApplicationController
 
   # POST /messsages
   def create
-    MessageManager::MessageCreator.call(params[:chat], params[:body])
-    render json: { msg: 'Message Created Successfully' }, status: :created
-  end
-
-  # PATCH/PUT /messsages/1
-  def update
-    if @messsage.update(messsage_params)
-      render json: @messsage
-    else
-      render json: @messsage.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /messsages/1
-  def destroy
-    @messsage.destroy
+    message_number = MessageManager::MessageCreator.call(params[:chat], params[:body])
+    render json: {message_number: message_number}, status: :created
   end
 
   private

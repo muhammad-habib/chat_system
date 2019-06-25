@@ -1,5 +1,3 @@
-require 'resque/server'
-require 'resque/scheduler/server'
 Rails.application.routes.draw do
   resources :messsages
   resources :chats
@@ -16,5 +14,8 @@ Rails.application.routes.draw do
       get '/applications/:app_token/chats/:chat_number/messages' => 'messages#index'
     end
   end
-  mount Resque::Server.new, at: "/resque"
+  require 'sidekiq/web'
+  require 'sidekiq-status/web'
+
+  mount Sidekiq::Web => '/sidekiq'
 end

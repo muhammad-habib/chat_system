@@ -7,7 +7,11 @@ module ChatManager
     end
 
     def call
-      ChatCreationJob.set(queue: 'chat').perform_later(@application)
+      job = ChatCreationJob.perform_later(@application)
+      while !Sidekiq::Status::complete?    job.provider_job_id do
+        sleep 1
+      end
+      Sidekiq::Status::get job.provider_job_id, :chat_num
     end
   end
 end
