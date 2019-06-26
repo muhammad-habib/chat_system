@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :messages, :except => ['update', 'show', 'create']
       post '/applications/:app_token/chats/:chat_number/messages' => 'messages#create'
       get '/applications/:app_token/chats/:chat_number/messages' => 'messages#index'
+      post '/applications/:app_token/chats/:chat_number/messages/search' => 'messages#search'
     end
   end
   require 'sidekiq/web'

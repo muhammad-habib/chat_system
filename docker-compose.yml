@@ -14,14 +14,12 @@ services:
       dockerfile: web.docker
     command: bash -c "rm -f tmp/pids/server.pid
             && bundle install
-            && bundle exec rake db:create
-            && bundle exec rake db:migrate
             && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/myapp
     ports:
       - "3000:3000"
-    links:
+    depends_on:
       - db
       - redis
       - elasticsearch
@@ -57,9 +55,14 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
     volumes:
       - .:/myapp
-    links:
+    depends_on:
       - db
       - redis
+      - elasticsearch
     environment:
       - REDIS_URL=redis://redis:6379
       - ELASTICSEARCH_URL=elasticsearch
+
+
+#  sudo sysctl -w vm.max_map_count=262144
+# docker-compose run web bundle exec rake db:setup
