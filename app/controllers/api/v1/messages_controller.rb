@@ -1,5 +1,7 @@
 class Api::V1::MessagesController < ApplicationController
-  before_action :checkChat, only: [:create, :index, :search]
+  before_action :checkChat, only: [:index, :search, :create]
+  before_action :checkMessageBody, only: [:create]
+  before_action :checkQuery, only: [:search]
   # GET /messsages
   def index
     render json: MessageManager::MessageLister.call(params[:chat]), except: [:chat_id]
@@ -47,11 +49,20 @@ class Api::V1::MessagesController < ApplicationController
       if !@chat
         render json: {msg: 'chat not found'}, status: :not_found
       else
-        if !params[:body].present?
-          render json: {msg: 'body not found'}, status: :not_found
-        end
           params[:chat] = @chat
       end
+    end
+  end
+
+  def checkMessageBody
+    if !params[:body].present?
+      render json: {msg: 'body not found'}, status: :not_found
+    end
+  end
+
+  def checkQuery
+    if !params[:query].present?
+      render json: {msg: 'query param not found'}, status: :not_found
     end
   end
 end

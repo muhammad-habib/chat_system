@@ -62,7 +62,3 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - ELASTICSEARCH_URL=elasticsearch
-
-
-#  sudo sysctl -w vm.max_map_count=262144
-# docker-compose run web bundle exec rake db:setup
