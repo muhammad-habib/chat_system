@@ -1,6 +1,6 @@
 #installation
 
-first run:  sudo sysctl -w vm.max_map_count=262144    //to enable elastic to allocated memory.
+first run:  sudo sysctl -w vm.max_map_count=262144    //to enable elastic to allocat memory.
 
 second run  docker-compose up.
 
