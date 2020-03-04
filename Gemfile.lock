@@ -98,7 +98,7 @@ GEM
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     numerizer (0.1.1)
-    puma (3.12.1)
+    puma (3.12.4)
     rack (2.0.7)
     rack-protection (2.0.5)
       rack
@@ -171,7 +171,7 @@ DEPENDENCIES
   elasticsearch-rails
   listen (>= 3.0.5, < 3.2)
   mysql2 (>= 0.4.4, < 0.6.0)
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 5.2.3)
   sidekiq
   sidekiq-status
